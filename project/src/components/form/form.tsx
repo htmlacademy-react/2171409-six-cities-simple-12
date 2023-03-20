@@ -9,9 +9,6 @@ function CommentFormComponent(): JSX.Element {
     const nowDate = new Date();
     setDate(nowDate.toISOString());
     event.preventDefault();
-    console.log('date', date);
-    console.log('comment', comment);
-    console.log('rating', rating);
   }
 
   return (

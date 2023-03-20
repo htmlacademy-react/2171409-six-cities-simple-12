@@ -6,7 +6,7 @@ type setActiveProp = {
 
 const setActive = ({ isActive }: setActiveProp) => isActive ? 'locations__item-link tabs__item tabs__item--active' : 'locations__item-link tabs__item';
 
-function Navigate(): JSX.Element {
+function HeaderMenu(): JSX.Element {
   return (
     <div className='tabs'>
       <section className='locations container'>
@@ -37,7 +37,7 @@ function Navigate(): JSX.Element {
             </NavLink>
           </li>
           <li className='locations__item'>
-            <NavLink className={'locations__item-link tabs__item'} to='/5'>
+            <NavLink className={setActive} to='/empty'>
               <span>Dusseldorf</span>
             </NavLink>
           </li>
@@ -47,4 +47,4 @@ function Navigate(): JSX.Element {
   );
 }
 
-export { Navigate };
+export { HeaderMenu };
