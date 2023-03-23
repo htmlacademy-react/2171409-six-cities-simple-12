@@ -27,6 +27,8 @@ export type Location = {
   zoom: number;
 };
 
+export type Locations = City[];
+
 export type User = {
   id: number;
   name: string;
