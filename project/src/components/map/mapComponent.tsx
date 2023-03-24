@@ -1,6 +1,6 @@
 import { Icon } from 'leaflet';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
-import { markerUrlDefault } from '../../const';
+import { urlMarkerDefault } from '../../const';
 import { City, Locations } from '../../types/offer';
 import 'leaflet/dist/leaflet.css';
 import { useRef } from 'react';
@@ -16,7 +16,7 @@ function MapComponent(props: MapComponentProps): JSX.Element {
   const { city, locations } = props;
 
   const defaultCustomIcon = new Icon({
-    iconUrl: markerUrlDefault,
+    iconUrl: urlMarkerDefault,
     iconSize: [27, 39],
     iconAnchor: [13, 39],
   });
