@@ -1,17 +1,24 @@
 import CardComponent from '../../components/card/card';
 import { HeaderMenu } from '../../components/header-menu/headerMenu';
-import { Header } from '../../components/header/header';
-import { Offers } from '../../types/offer';
+// import { Header } from '../../components/header/header';
+import MapComponent from '../../components/map/mapComponent';
+import { City, Locations, Offers } from '../../types/offer';
 
 type MainScreenProps = {
   placesAmount: number;
   offers: Offers;
+  city: City;
+  locations: Locations;
 }
 
-function MainScreen({ placesAmount, offers }: MainScreenProps): JSX.Element {
+function MainScreen(props: MainScreenProps): JSX.Element {
+  const { placesAmount, offers, city, locations } = props;
+
+  // const [selectedLocation, setSelectedLocation] = useState(Location | undefined);
+
   return (
-    <>
-      <Header />
+    <main className="page__main page__main--index">
+      <h1 className="visually-hidden">Cities</h1>
       <HeaderMenu />
       <div className='cities'>
         <div className='cities__places-container container'>
@@ -50,12 +57,14 @@ function MainScreen({ placesAmount, offers }: MainScreenProps): JSX.Element {
               }
             </div>
           </section>
-          <div className='cities__right-section'>
-            <section className='cities__map map' />
+          <div className="cities__right-section">
+            <section className='map' style={{width: '100%', height: '100vh'}}>
+              <MapComponent city={city} locations={locations} />
+            </section>
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 }
 

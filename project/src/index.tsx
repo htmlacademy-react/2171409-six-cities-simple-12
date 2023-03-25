@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
+import { CITY } from './mocks/city';
+import { LOCATIONS } from './mocks/locations';
 import { offers } from './mocks/offers';
 import { reviews } from './mocks/reviews';
 
@@ -18,6 +20,8 @@ root.render(
       placesAmount={Settings.CountPlaces}
       offers={offers}
       reviews={reviews}
+      city={CITY}
+      locations={LOCATIONS}
     />
   </React.StrictMode>,
 );
