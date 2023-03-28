@@ -1,3 +1,5 @@
+export const MAX_OFFERS = 3;
+
 export enum AppRoute {
   Main = '/',
   Login = 'login',
@@ -5,6 +7,6 @@ export enum AppRoute {
   Empty = 'empty'
 }
 
-export const urlMarkerDefault = './img/pin.svg';
+export const URL_POINT_DEFAULT = './img/pin.svg';
 
-export const urlMarkerActive = './img/pin-active.svg';
+export const URL_POINT_ACTIVE = './img/pin-active.svg';

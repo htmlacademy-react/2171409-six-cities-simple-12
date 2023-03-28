@@ -1,4 +1,4 @@
-import { HeaderMenu } from '../../components/header-menu/headerMenu';
+import { HeaderMenu } from '../../components/header-menu/header-menu';
 import { Header } from '../../components/header/header';
 
 function MainScreenEmpty(): JSX.Element {
