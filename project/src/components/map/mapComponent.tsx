@@ -2,7 +2,7 @@ import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { City, Locations } from '../../types/offer';
 import 'leaflet/dist/leaflet.css';
 import { useRef } from 'react';
-import { URL_MARKER_DEFAULT } from '../../const';
+import { URL_POINT_DEFAULT } from '../../const';
 import { Icon } from 'leaflet';
 
 
@@ -18,7 +18,7 @@ function MapComponent(props: MapComponentProps): JSX.Element {
   const { city, locations, styleProp, spliceOffers = 4 } = props;
 
   const defaultCustomIcon = new Icon({
-    iconUrl: URL_MARKER_DEFAULT,
+    iconUrl: URL_POINT_DEFAULT,
     iconSize: [27, 39],
     iconAnchor: [13, 39],
   });
