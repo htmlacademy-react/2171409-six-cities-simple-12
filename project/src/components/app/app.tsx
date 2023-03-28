@@ -7,7 +7,7 @@ import ErrorScreen from '../../pages/404/404';
 import PropertyScreen from '../../pages/property/property';
 import { City, Locations, Offers, Reviews } from '../../types/offer';
 import Layout from '../layout/layout';
-import MainScreenEmpty from '../../pages/mainEmpty/mainEmpty';
+import MainScreenEmpty from '../../pages/main-empty/main-empty';
 
 type AppProps = {
   placesAmount: number;

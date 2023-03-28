@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import ImagesComponent from '../../components/images/images';
 import CommentFormComponent from '../../components/form/form';
 import ReviewsComponent from '../../components/reviews/reviews';
-import MapComponent from '../../components/map/mapComponent';
+import MapComponent from '../../components/map/map-component';
 import { MAX_OFFERS } from '../../const';
 import CardComponent from '../../components/card/card';
 import { Header } from '../../components/header/header';

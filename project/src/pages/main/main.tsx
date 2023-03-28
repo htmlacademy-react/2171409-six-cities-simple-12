@@ -1,8 +1,7 @@
 import CardComponent from '../../components/card/card';
-import { HeaderMenu } from '../../components/header-menu/headerMenu';
+import { HeaderMenu } from '../../components/header-menu/header-menu';
 import { Header } from '../../components/header/header';
-// import { Header } from '../../components/header/header';
-import MapComponent from '../../components/map/mapComponent';
+import MapComponent from '../../components/map/map-component';
 import { City, Locations, Offers } from '../../types/offer';
 
 type MainScreenProps = {
