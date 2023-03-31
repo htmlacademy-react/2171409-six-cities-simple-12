@@ -1,40 +1,65 @@
-import { MapContainer, Marker, TileLayer } from 'react-leaflet';
-import { City, Locations } from '../../types/offer';
+import { Offers } from '../../types/offer';
 import 'leaflet/dist/leaflet.css';
-import { useRef } from 'react';
-import { URL_POINT_DEFAULT } from '../../const';
-import { Icon } from 'leaflet';
+import { useEffect, useRef } from 'react';
+import { URL_POINT_ACTIVE, URL_POINT_DEFAULT } from '../../const';
+import { Icon, Marker } from 'leaflet';
+import useMap from '../../hooks/useMap';
 
-
-type MapComponentProps = {
-  city: City;
-  locations: Locations;
-  styleProp: object;
-  spliceOffers?: number;
+type StyleMap = {
+  height: string;
 };
 
+type MapComponentProps = {
+  activeOffer: null | number;
+  offersAll: Offers;
+  className: string;
+  style: StyleMap;
+};
+
+const defaultCustomIcon = new Icon({
+  iconUrl: URL_POINT_DEFAULT,
+  iconSize: [27, 39],
+  iconAnchor: [13, 39],
+});
+
+const currentCustomIcon = new Icon({
+  iconUrl: URL_POINT_ACTIVE,
+  iconSize: [27, 39],
+  iconAnchor: [13, 39],
+});
 
 function MapComponent(props: MapComponentProps): JSX.Element {
-  const { city, locations, styleProp, spliceOffers = 4 } = props;
-
-  const defaultCustomIcon = new Icon({
-    iconUrl: URL_POINT_DEFAULT,
-    iconSize: [27, 39],
-    iconAnchor: [13, 39],
-  });
-
+  const { activeOffer, offersAll, className, style } = props;
   const mapRef = useRef(null);
+  const city = offersAll[0].city;
+  const map = useMap(mapRef, city);
+
+  useEffect(() => {
+    if (map) {
+      map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
+    }
+  }, [map, city]);
+
+  useEffect(() => {
+    if (map) {
+      offersAll.forEach((offer) => {
+        const marker = new Marker({
+          lat: offer.location.latitude,
+          lng: offer.location.longitude,
+        });
+        marker
+          .setIcon(
+            offer.id === activeOffer
+              ? currentCustomIcon
+              : defaultCustomIcon,
+          )
+          .addTo(map);
+      });
+    }
+  }, [map, offersAll, activeOffer]);
 
   return (
-    <MapContainer center={[city.location.latitude, city.location.longitude]} zoom={city.location.zoom} style={styleProp} ref={mapRef}>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-      />
-      {
-        locations.map(({ location, name }) => (<Marker position={[location.latitude, location.longitude]} icon={defaultCustomIcon} key={name} />)).splice(0, spliceOffers)
-      }
-    </MapContainer>
+    <section className={className} ref={mapRef} style={style} />
   );
 }
 

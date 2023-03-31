@@ -12,32 +12,32 @@ function HeaderMenu(): JSX.Element {
       <section className='locations container'>
         <ul className='locations__list tabs__list'>
           <li className='locations__item'>
-            <NavLink className={setActive} to='/1'>
+            <NavLink className={setActive} to='/'>
               <span>Paris</span>
             </NavLink>
           </li>
           <li className='locations__item'>
-            <NavLink className={setActive} to='/2'>
+            <NavLink className={setActive} to='/cologne'>
               <span>Cologne</span>
             </NavLink>
           </li>
           <li className='locations__item'>
-            <NavLink className={setActive} to='/3'>
+            <NavLink className={setActive} to='/brussels'>
               <span>Brussels</span>
             </NavLink>
           </li>
           <li className='locations__item'>
-            <NavLink to='/' className={setActive} >
+            <NavLink className={setActive} to='/amsterdam' >
               <span>Amsterdam</span>
             </NavLink>
           </li>
           <li className='locations__item'>
-            <NavLink className={setActive} to='/4'>
+            <NavLink className={setActive} to='/hamburg'>
               <span>Hamburg</span>
             </NavLink>
           </li>
           <li className='locations__item'>
-            <NavLink className={setActive} to='/empty'>
+            <NavLink className={setActive} to='/dusseldorf'>
               <span>Dusseldorf</span>
             </NavLink>
           </li>
