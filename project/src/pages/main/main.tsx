@@ -1,69 +1,66 @@
-import CardComponent from '../../components/card/card';
-import { HeaderMenu } from '../../components/header-menu/header-menu';
 import { Header } from '../../components/header/header';
 import MapComponent from '../../components/map/map-component';
-import { City, Locations, Offers } from '../../types/offer';
+import { sortOffers } from '../../const';
+import { setActiveCity } from '../../store/action';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import SortList from '../../components/sort-list/sort-list';
+import { useState } from 'react';
+import MainScreenEmpty from '../main-empty/main-empty';
+import { HeaderMenu } from '../../components/header-menu/header-menu';
+import OffersListComponent from '../../components/offers-list/offers-list';
+import { City } from '../../types/offer';
+import { LOCATIONS } from '../../mocks/locations';
 
-type MainScreenProps = {
-  placesAmount: number;
-  offers: Offers;
-  city: City;
-  locations: Locations;
-}
 
-function MainScreen(props: MainScreenProps): JSX.Element {
-  const { placesAmount, offers, city, locations } = props;
+function MainScreen(): JSX.Element {
+  const [activeOffer, setActiveOffer] = useState<null | number>(null);
+  const dispatch = useAppDispatch();
+  const selectedCity = useAppSelector((state) => state.city);
+  const currentOffers = useAppSelector((state) => state.offers.filter((offer) => offer.city.name === selectedCity.name));
+  const activeSortType = useAppSelector((state) => state.sortOption);
+  const sortedOffers = sortOffers(currentOffers, activeSortType);
 
-  const styleProp = { height: '682px' };
+  const handleChangeCity = (e: React.MouseEvent<HTMLAnchorElement>, city: City) => {
+    e.preventDefault();
+    dispatch(setActiveCity(city));
+  };
+
+  const noOffers = currentOffers.length < 1;
 
   return (
     <>
       <Header />
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        <HeaderMenu />
+        <div className='tabs'>
+          <section className='locations container'>
+            <ul className='locations__list tabs__list'>
+              {LOCATIONS.map((city) => (
+                <HeaderMenu
+                  city={city}
+                  key={city.name}
+                  isActive={selectedCity.name === city.name}
+                  changeCurrentLocation={handleChangeCity}
+                />
+              ))}
+            </ul>
+          </section>
+        </div>
         <div className='cities'>
-          <div className='cities__places-container container'>
-            <section className='cities__places places'>
-              <h2 className='visually-hidden'>Places</h2>
-              <b className='places__found'>{placesAmount} places to stay in Amsterdam</b>
-              <form className='places__sorting' action='#' method='get'>
-                <span className='places__sorting-caption'>Sort by</span>
-                <span className='places__sorting-type' tabIndex={0}>
-                  Popular
-                  <svg className='places__sorting-arrow' width={7} height={4}>
-                    <use xlinkHref='#icon-arrow-select' />
-                  </svg>
-                </span>
-                <ul className='places__options places__options--custom places__options--opened'>
-                  <li
-                    className='places__option places__option--active'
-                    tabIndex={0}
-                  >
-                    Popular
-                  </li>
-                  <li className='places__option' tabIndex={0}>
-                    Price: low to high
-                  </li>
-                  <li className='places__option' tabIndex={0}>
-                    Price: high to low
-                  </li>
-                  <li className='places__option' tabIndex={0}>
-                    Top rated first
-                  </li>
-                </ul>
-              </form>
-              <div className='cities__places-list places__list tabs__content'>
-                {
-                  offers.map((offer) => <CardComponent key={offer.id} offer={offer} />)
-                }
-              </div>
-            </section>
-            <div className="cities__right-section">
-              <section className='map' style={{ width: '100%' }}>
-                <MapComponent city={city} locations={locations} styleProp={styleProp} />
-              </section>
-            </div>
+          <div className="cities__places-container container">
+            {noOffers ? (<MainScreenEmpty cityName={selectedCity.name} />) : (
+              <>
+                <section className="cities__places places">
+                  <h2 className="visually-hidden">Places</h2>
+                  <b className="places__found">{currentOffers.length}&nbsp;{currentOffers.length <= 1 ? 'place' : 'places'} to stay in {selectedCity.name}</b>
+                  <SortList selectedSortItem={activeSortType} />
+                  <OffersListComponent offers={sortedOffers} setActiveOffer={setActiveOffer} />
+                </section>
+                <div className="cities__right-section">
+                  <MapComponent className='cities__map map' activeOffer={activeOffer} offers={currentOffers} style={{ height: '1100px' }} />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </main>

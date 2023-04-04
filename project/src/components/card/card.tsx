@@ -1,20 +1,30 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { getUppercase } from '../../utils';
+import { AppRoute } from '../../const';
 
 type CardComponentProps = {
   offer: Offer;
+  setActiveOffer: (id: number | null) => void;
 }
 
-function CardComponent({ offer }: CardComponentProps): JSX.Element {
+function CardComponent({ offer, setActiveOffer }: CardComponentProps): JSX.Element {
+  const { id } = offer;
+  const offerId = `${AppRoute.Room}/${id}`;
+  function mouseOverHandler() {
+    setActiveOffer(id);
+  }
 
+  function mouseLeaveHandler() {
+    setActiveOffer(null);
+  }
   return (
-    <article className='cities__card place-card'>
+    <article className='cities__card place-card' onMouseOver={mouseOverHandler} onMouseLeave={mouseLeaveHandler}>
       <div className='place-card__mark'>
         <span>{offer.isPremium ? 'Premium' : 'Standart'}</span>
       </div>
       <div className='cities__image-wrapper place-card__image-wrapper'>
-        <Link to={`offer/${offer.id}`}>
+        <Link to={offerId}>
           <img
             className='place-card__image'
             src={`${offer.previewImage}`}
