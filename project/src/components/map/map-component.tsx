@@ -33,19 +33,27 @@ function MapComponent(props: MapComponentProps): JSX.Element {
   const { activeOffer, offers, className, style } = props;
   const mapRef = useRef(null);
   const selectedCity = useAppSelector(({ city }) => city);
-  const [currentCity, setCurrentCity] = useState<City>();
   const [map, layerGroup] = useMap(mapRef, selectedCity);
+  const [currentCity, setCurrentCity] = useState<City>(selectedCity);
+
 
   useEffect(() => {
-    if (map && layerGroup && selectedCity) {
-
+    if (map && layerGroup) {
+      if (selectedCity !== currentCity) {
+        map.setView(
+          [
+            currentCity.location.latitude,
+            currentCity.location.longitude
+          ],
+          currentCity.location.zoom
+        );
+        setCurrentCity(selectedCity);
+      }
       const addMarker = (offer: Offer) => {
-
         const marker = new Marker({
           lat: offer.location.latitude,
           lng: offer.location.longitude
         });
-
         marker
           .setIcon(
             activeOffer && offer.id === activeOffer
@@ -54,24 +62,12 @@ function MapComponent(props: MapComponentProps): JSX.Element {
           )
           .addTo(layerGroup);
       };
-
-      if (currentCity !== selectedCity) {
-
-        if (currentCity) {
-          map.flyTo([selectedCity.location.latitude, selectedCity.location.longitude], selectedCity.location.zoom, {
-            animate: true,
-            duration: 1
-          });
-        }
-
-        setCurrentCity(selectedCity);
-      }
-
       layerGroup.clearLayers();
 
       offers.forEach((offer) => {
         addMarker(offer);
       });
+
     }
   }, [map, offers, activeOffer, selectedCity, layerGroup, currentCity]);
 

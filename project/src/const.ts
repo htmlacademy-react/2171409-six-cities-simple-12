@@ -34,7 +34,7 @@ export const SortMenuItems = [
   'Top rated first',
 ];
 
-export function SortOffers(cards: Offers, sortListItem: string) {
+export function sortOffers(cards: Offers, sortListItem: string) {
   if(sortListItem === SortMenuItems[1]) {
     return cards.sort((a, b) => a.price - b.price);
   } else if (sortListItem === SortMenuItems[2]) {

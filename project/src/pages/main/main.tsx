@@ -1,30 +1,30 @@
 import { Header } from '../../components/header/header';
 import MapComponent from '../../components/map/map-component';
-import { CITIES, SortOffers } from '../../const';
+import { CITIES, sortOffers } from '../../const';
 import { setOffersByCity } from '../../store/action';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import SortList from '../../components/sort-list/sort-list';
 import { useState } from 'react';
 import MainScreenEmpty from '../main-empty/main-empty';
 import { HeaderMenu } from '../../components/header-menu/header-menu';
-import OfferListComponent from '../../components/offer-list/offer-list';
+import OffersListComponent from '../../components/offers-list/offers-list';
 
 
 function MainScreen(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<null | number>(null);
   const dispatch = useAppDispatch();
   const selectedCity = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => state.offers);
-  const offersByCity = useAppSelector((state) => state.offers.filter((offer) => offer.city.name === selectedCity.name));
-  const selectedSortItem = useAppSelector((state) => state.sortOption);
-  const sortOffers = SortOffers(offersByCity, selectedSortItem);
+  const allOffers = useAppSelector((state) => state.offers);
+  const currentOffers = useAppSelector((state) => state.offers.filter((offer) => offer.city.name === selectedCity.name));
+  const activeSortType = useAppSelector((state) => state.sortOption);
+  const sortedOffers = sortOffers(currentOffers, activeSortType);
 
   const handleChangeCity = (e: React.MouseEvent<HTMLAnchorElement>, city: string) => {
     e.preventDefault();
     dispatch(setOffersByCity(city));
   };
 
-  const noOffers = offersByCity.length < 1;
+  const noOffers = currentOffers.length < 1;
 
   return (
     <>
@@ -51,12 +51,12 @@ function MainScreen(): JSX.Element {
               <>
                 <section className="cities__places places">
                   <h2 className="visually-hidden">Places</h2>
-                  <b className="places__found">{offersByCity.length}&nbsp;{offersByCity.length <= 1 ? 'place' : 'places'} to stay in {selectedCity.name}</b>
-                  <SortList selectedSortItem={selectedSortItem} />
-                  <OfferListComponent offers={sortOffers} setActiveOffer={setActiveOffer} />
+                  <b className="places__found">{currentOffers.length}&nbsp;{currentOffers.length <= 1 ? 'place' : 'places'} to stay in {selectedCity.name}</b>
+                  <SortList selectedSortItem={activeSortType} />
+                  <OffersListComponent offers={sortedOffers} setActiveOffer={setActiveOffer} />
                 </section>
                 <div className="cities__right-section">
-                  <MapComponent className='cities__map map' activeOffer={activeOffer} offers={offers} style={{ height: '1100px' }} />
+                  <MapComponent className='cities__map map' activeOffer={activeOffer} offers={allOffers} style={{ height: '1100px' }} />
                 </div>
               </>
             )}
