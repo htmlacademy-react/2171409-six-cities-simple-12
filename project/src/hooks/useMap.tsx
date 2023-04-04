@@ -1,11 +1,10 @@
 import { useEffect, useState, useRef, MutableRefObject } from 'react';
-import { LayerGroup, Map, TileLayer } from 'leaflet';
+import { Map, TileLayer } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { City } from '../types/offer';
 
-function useMap(mapRef: MutableRefObject<HTMLElement | null>, city: City): [Map | null, LayerGroup | null] {
+function useMap(mapRef: MutableRefObject<HTMLElement | null>, city: City): Map | null {
   const [map, setMap] = useState<Map | null>(null);
-  const [layerGroup, setLayerGroup] = useState<LayerGroup | null>(null);
   const isRenderedRef = useRef<boolean>(false);
 
   useEffect(() => {
@@ -25,14 +24,12 @@ function useMap(mapRef: MutableRefObject<HTMLElement | null>, city: City): [Map 
         },
       );
       instance.addLayer(layer);
-      const markerLayerGroup = new LayerGroup().addTo(instance);
       setMap(instance);
-      setLayerGroup(markerLayerGroup);
       isRenderedRef.current = true;
     }
   }, [mapRef, city]);
 
-  return [map, layerGroup];
+  return map;
 }
 
 export default useMap;

@@ -1,6 +1,6 @@
-import { City, Offer, Offers } from '../../types/offer';
+import { Offer, Offers } from '../../types/offer';
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { URL_POINT_ACTIVE, URL_POINT_DEFAULT } from '../../const';
 import { Icon, Marker } from 'leaflet';
 import useMap from '../../hooks/useMap';
@@ -33,22 +33,18 @@ function MapComponent(props: MapComponentProps): JSX.Element {
   const { activeOffer, offers, className, style } = props;
   const mapRef = useRef(null);
   const selectedCity = useAppSelector(({ city }) => city);
-  const [map, layerGroup] = useMap(mapRef, selectedCity);
-  const [currentCity, setCurrentCity] = useState<City>(selectedCity);
-
+  const map = useMap(mapRef, selectedCity);
 
   useEffect(() => {
-    if (map && layerGroup) {
-      if (selectedCity !== currentCity) {
-        map.setView(
-          [
-            currentCity.location.latitude,
-            currentCity.location.longitude
-          ],
-          currentCity.location.zoom
-        );
-        setCurrentCity(selectedCity);
-      }
+    const markers: Marker[] = [];
+    if (map) {
+      map.setView(
+        [
+          selectedCity.location.latitude,
+          selectedCity.location.longitude
+        ],
+        selectedCity.location.zoom
+      );
       const addMarker = (offer: Offer) => {
         const marker = new Marker({
           lat: offer.location.latitude,
@@ -60,16 +56,20 @@ function MapComponent(props: MapComponentProps): JSX.Element {
               ? currentCustomIcon
               : defaultCustomIcon,
           )
-          .addTo(layerGroup);
+          .addTo(map);
+        markers.push(marker);
       };
-      layerGroup.clearLayers();
 
       offers.forEach((offer) => {
         addMarker(offer);
       });
 
     }
-  }, [map, offers, activeOffer, selectedCity, layerGroup, currentCity]);
+    return () => {
+      markers.forEach((marker) => marker.remove());
+    };
+
+  }, [map, offers, activeOffer, selectedCity]);
 
   return (
     <section className={className} ref={mapRef} style={style} />

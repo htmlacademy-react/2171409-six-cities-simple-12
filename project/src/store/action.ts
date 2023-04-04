@@ -1,6 +1,7 @@
+import { City } from './../types/offer';
 import {createAction} from '@reduxjs/toolkit';
 
-export const setOffersByCity = createAction('offers/cityChange', (city: string) => ({
+export const setActiveCity = createAction('offers/cityChange', (city: City) => ({
   payload: city,
 }));
 

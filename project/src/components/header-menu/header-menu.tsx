@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
+import { City } from '../../types/offer';
 
 type HeaderMenuProps = {
   isActive: boolean;
-  city: string;
-  changeCurrentLocation: (e: React.MouseEvent<HTMLAnchorElement>, city: string) => void;
+  city: City;
+  changeCurrentLocation: (e: React.MouseEvent<HTMLAnchorElement>, city: City) => void;
 }
 
 function HeaderMenu(props: HeaderMenuProps): JSX.Element {
@@ -13,7 +14,7 @@ function HeaderMenu(props: HeaderMenuProps): JSX.Element {
   return (
     <li className='locations__item'>
       <Link className={`locations__item-link tabs__item ${setActive}`} to={'/'} onClick={(e) => changeCurrentLocation(e, city)}>
-        <span>{city}</span>
+        <span>{city.name}</span>
       </Link>
     </li>
   );

@@ -1,27 +1,28 @@
 import { Header } from '../../components/header/header';
 import MapComponent from '../../components/map/map-component';
-import { CITIES, sortOffers } from '../../const';
-import { setOffersByCity } from '../../store/action';
+import { sortOffers } from '../../const';
+import { setActiveCity } from '../../store/action';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import SortList from '../../components/sort-list/sort-list';
 import { useState } from 'react';
 import MainScreenEmpty from '../main-empty/main-empty';
 import { HeaderMenu } from '../../components/header-menu/header-menu';
 import OffersListComponent from '../../components/offers-list/offers-list';
+import { City } from '../../types/offer';
+import { LOCATIONS } from '../../mocks/locations';
 
 
 function MainScreen(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<null | number>(null);
   const dispatch = useAppDispatch();
   const selectedCity = useAppSelector((state) => state.city);
-  const allOffers = useAppSelector((state) => state.offers);
   const currentOffers = useAppSelector((state) => state.offers.filter((offer) => offer.city.name === selectedCity.name));
   const activeSortType = useAppSelector((state) => state.sortOption);
   const sortedOffers = sortOffers(currentOffers, activeSortType);
 
-  const handleChangeCity = (e: React.MouseEvent<HTMLAnchorElement>, city: string) => {
+  const handleChangeCity = (e: React.MouseEvent<HTMLAnchorElement>, city: City) => {
     e.preventDefault();
-    dispatch(setOffersByCity(city));
+    dispatch(setActiveCity(city));
   };
 
   const noOffers = currentOffers.length < 1;
@@ -34,11 +35,11 @@ function MainScreen(): JSX.Element {
         <div className='tabs'>
           <section className='locations container'>
             <ul className='locations__list tabs__list'>
-              {CITIES.map((city) => (
+              {LOCATIONS.map((city) => (
                 <HeaderMenu
                   city={city}
-                  key={city}
-                  isActive={selectedCity.name === city}
+                  key={city.name}
+                  isActive={selectedCity.name === city.name}
                   changeCurrentLocation={handleChangeCity}
                 />
               ))}
@@ -56,7 +57,7 @@ function MainScreen(): JSX.Element {
                   <OffersListComponent offers={sortedOffers} setActiveOffer={setActiveOffer} />
                 </section>
                 <div className="cities__right-section">
-                  <MapComponent className='cities__map map' activeOffer={activeOffer} offers={allOffers} style={{ height: '1100px' }} />
+                  <MapComponent className='cities__map map' activeOffer={activeOffer} offers={currentOffers} style={{ height: '1100px' }} />
                 </div>
               </>
             )}
