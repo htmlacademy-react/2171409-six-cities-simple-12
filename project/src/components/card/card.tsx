@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { getUppercase } from '../../utils';
+import { AppRoute } from '../../const';
 
 type CardComponentProps = {
   offer: Offer;
@@ -9,7 +10,7 @@ type CardComponentProps = {
 
 function CardComponent({ offer, setActiveOffer }: CardComponentProps): JSX.Element {
   const { id } = offer;
-  const offerId = `/offer/${id}`;
+  const offerId = `${AppRoute.Room}/${id}`;
   function mouseOverHandler() {
     setActiveOffer(id);
   }
@@ -18,7 +19,7 @@ function CardComponent({ offer, setActiveOffer }: CardComponentProps): JSX.Eleme
     setActiveOffer(null);
   }
   return (
-    <article className='cities__card place-card'onMouseOver={mouseOverHandler} onMouseLeave={mouseLeaveHandler}>
+    <article className='cities__card place-card' onMouseOver={mouseOverHandler} onMouseLeave={mouseLeaveHandler}>
       <div className='place-card__mark'>
         <span>{offer.isPremium ? 'Premium' : 'Standart'}</span>
       </div>

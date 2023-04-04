@@ -98,7 +98,7 @@ function PropertyScreen(): JSX.Element {
               </section> */}
             </div>
           </div>
-          <MapComponent className='map' offersAll={offers} style={styleProp} activeOffer={selectOffer.id} />
+          <MapComponent className='map' offers={offers} style={styleProp} activeOffer={selectOffer.id} />
         </section>
         <div className='container'>
 

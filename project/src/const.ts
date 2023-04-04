@@ -18,6 +18,15 @@ export enum Cities {
   Dusseldorf = 'Dusseldorf'
 }
 
+export const CITIES = [
+  'Paris',
+  'Cologne',
+  'Brussels',
+  'Amsterdam',
+  'Hamburg',
+  'Dusseldorf',
+];
+
 export const SortMenuItems = [
   'Popular',
   'Price: low to high',
