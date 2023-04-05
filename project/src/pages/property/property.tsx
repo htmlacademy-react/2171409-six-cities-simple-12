@@ -4,6 +4,7 @@ import MapComponent from '../../components/map/map-component';
 import { AppRoute } from '../../const';
 import { Header } from '../../components/header/header';
 import { useAppSelector } from '../../hooks/store';
+import { calcRating } from '../../utils';
 
 function PropertyScreen(): JSX.Element {
   const { id } = useParams();
@@ -39,7 +40,7 @@ function PropertyScreen(): JSX.Element {
               </div>
               <div className='property__rating rating'>
                 <div className='property__stars rating__stars'>
-                  <span style={{ width: '80%' }} />
+                  <span style={{ width: calcRating(selectedOffer.rating) }} />
                   <span className='visually-hidden'>Rating</span>
                 </div>
                 <span className='property__rating-value rating__value'>{selectedOffer.rating}</span>
