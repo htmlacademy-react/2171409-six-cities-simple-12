@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
-import { getUppercase } from '../../utils';
+import { getUppercase, calcRating } from '../../utils';
 import { AppRoute } from '../../const';
 
 type CardComponentProps = {
@@ -43,7 +43,7 @@ function CardComponent({ offer, setActiveOffer }: CardComponentProps): JSX.Eleme
         </div>
         <div className='place-card__rating rating'>
           <div className='place-card__stars rating__stars'>
-            <span style={{ width: '80%' }} />
+            <span style={{ width: calcRating(offer.rating) }} />
             <span className='visually-hidden'>Rating</span>
           </div>
         </div>

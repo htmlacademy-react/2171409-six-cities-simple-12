@@ -26,3 +26,6 @@ export function GetRandomArrayItems<T>(lines: T[], max: number): T[] {
 
   return resultImages;
 }
+
+const WIDTH_STARS = 5;
+export const calcRating = (rating: number) => `${Math.round(rating) / WIDTH_STARS * 100}%`;
