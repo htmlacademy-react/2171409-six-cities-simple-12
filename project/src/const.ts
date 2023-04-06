@@ -2,11 +2,18 @@ import { Offers } from './types/offer';
 
 export const MAX_OFFERS_NEARBY = 3;
 
+export const TIMEOUT_SHOW_ERROR = 2000;
+
 export enum AppRoute {
   Main = '/',
   Login = 'login',
   Room = 'offer',
-  Empty = 'empty'
+  Empty = 'empty',
+  Rooms = 'offers'
+}
+
+export enum APIRoute {
+  Hotels = '/hotels'
 }
 
 export enum Cities {
