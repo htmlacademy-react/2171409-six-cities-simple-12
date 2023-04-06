@@ -11,7 +11,6 @@ import OffersListComponent from '../../components/offers-list/offers-list';
 import { City } from '../../types/offer';
 import { LOCATIONS } from '../../mocks/locations';
 
-
 function MainScreen(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<null | number>(null);
   const dispatch = useAppDispatch();
@@ -31,6 +30,7 @@ function MainScreen(): JSX.Element {
     <>
       <Header />
       <main className="page__main page__main--index">
+
         <h1 className="visually-hidden">Cities</h1>
         <div className='tabs'>
           <section className='locations container'>

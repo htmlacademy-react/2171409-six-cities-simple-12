@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import MainScreen from '../../pages/main/main';
@@ -6,16 +5,17 @@ import Login from '../../pages/login/login';
 import ErrorScreen from '../../pages/404/404';
 import PropertyScreen from '../../pages/property/property';
 import Layout from '../layout/layout';
-
-// type AppProps = {
-//   offers: Offers;
-//   reviews: Reviews;
-//   city: City;
-//   locations: Locations;
-// };
+import { useAppSelector } from '../../hooks/store';
+import LoaderComponent from '../loader/loader';
 
 function App(): JSX.Element {
-  // const { offers, reviews, city, locations } = props;
+  const isRoomsLoading = useAppSelector((state) => state.isRoomsLoading);
+
+  if (isRoomsLoading) {
+    return (
+      <LoaderComponent />
+    );
+  }
 
   return (
     <BrowserRouter>
