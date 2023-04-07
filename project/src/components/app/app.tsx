@@ -9,6 +9,7 @@ import { useAppSelector } from '../../hooks/store';
 import LoaderComponent from '../loader/loader';
 
 function App(): JSX.Element {
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isRoomsLoading = useAppSelector((state) => state.isRoomsLoading);
 
   if (isRoomsLoading) {
