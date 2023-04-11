@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom';
+import { Header } from '../header/header';
 
 function Layout() {
   return (
@@ -24,6 +25,7 @@ function Layout() {
           </symbol>
         </svg>
       </div>
+      <Header />
       <Outlet />
     </div>
   );

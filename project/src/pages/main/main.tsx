@@ -1,6 +1,5 @@
-import { Header } from '../../components/header/header';
 import MapComponent from '../../components/map/map-component';
-import { sortOffers } from '../../const';
+import { AppRoute, AuthorizationStatus, sortOffers } from '../../const';
 import { setActiveCity } from '../../store/action';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import SortList from '../../components/sort-list/sort-list';
@@ -10,8 +9,14 @@ import { HeaderMenu } from '../../components/header-menu/header-menu';
 import OffersListComponent from '../../components/offers-list/offers-list';
 import { City } from '../../types/offer';
 import { LOCATIONS } from '../../mocks/locations';
+import { Navigate } from 'react-router-dom';
 
-function MainScreen(): JSX.Element {
+type MainScreenProps = {
+  authorizationStatus: AuthorizationStatus;
+}
+
+function MainScreen(props: MainScreenProps): JSX.Element {
+  const { authorizationStatus } = props;
   const [activeOffer, setActiveOffer] = useState<null | number>(null);
   const dispatch = useAppDispatch();
   const selectedCity = useAppSelector((state) => state.city);
@@ -27,8 +32,8 @@ function MainScreen(): JSX.Element {
   const noOffers = currentOffers.length < 1;
 
   return (
-    <>
-      <Header />
+    authorizationStatus === AuthorizationStatus.Auth
+      ?
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className='tabs'>
@@ -63,8 +68,7 @@ function MainScreen(): JSX.Element {
           </div>
         </div>
       </main>
-    </>
-
+      : <Navigate to={AppRoute.Login} />
   );
 }
 

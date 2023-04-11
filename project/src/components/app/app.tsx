@@ -7,7 +7,6 @@ import PropertyScreen from '../../pages/property/property';
 import Layout from '../layout/layout';
 import { useAppSelector } from '../../hooks/store';
 import LoaderComponent from '../loader/loader';
-import PrivateRoute from '../private-route/private-route';
 import HistoryRouter from '../history-router/history-router';
 import browserHistory from '../../browser-history';
 function App(): JSX.Element {
@@ -25,14 +24,7 @@ function App(): JSX.Element {
     <HistoryRouter history={browserHistory}>
       <Routes>
         <Route path={AppRoute.Main} element={<Layout />}>
-          <Route index element={
-            <PrivateRoute
-              authorizationStatus={authorizationStatus}
-            >
-              <MainScreen />
-            </PrivateRoute>
-          }
-          />
+          <Route index element={<MainScreen authorizationStatus={authorizationStatus} />} />
           <Route path={AppRoute.Login} element={<Login />} />
           <Route path={`${AppRoute.Room}/:id`} element={<PropertyScreen />} />
           <Route path='*' element={<ErrorScreen />} />
