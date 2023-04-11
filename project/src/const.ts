@@ -13,7 +13,15 @@ export enum AppRoute {
 }
 
 export enum APIRoute {
-  Hotels = '/hotels'
+  Hotels = '/hotels',
+  Login = '/login',
+  Logout = '/logout'
+}
+
+export enum AuthorizationStatus {
+  Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN',
 }
 
 export enum Cities {
