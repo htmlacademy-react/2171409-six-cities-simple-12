@@ -2,7 +2,7 @@ import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, State} from '../types/state';
 import {APIRoute, AppRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR} from '../const';
-import { getUserData, loadOffer, loadOffers, loadOffersNearby, loadReviews, redirectToRoute, setAuthorizationStatus, setError, setPostReviewLoadingStatus, setRoomsLoadingStatus } from './action';
+import { getUserData, loadOffer, loadOffers, loadOffersNearby, loadReviews, redirectToRoute, setAuthorizationStatus, setError, setRoomsLoadingStatus } from './action';
 import { Offers, Reviews, OfferId, Offer, NewReview } from '../types/offer';
 import { dropToken, saveToken } from '../services/token';
 import { UserData } from '../types/user-data';
@@ -29,7 +29,10 @@ export const fetchOfferAction = createAsyncThunk<void, OfferId, {
   extra: AxiosInstance;
 }>(
   'data/fetchOffer',
-  async (offerId, {dispatch, extra: api}) => {
+  async (offerId, { dispatch, extra: api }) => {
+    if (!offerId) {
+      dispatch(redirectToRoute(AppRoute.Main));
+    }
     const { data } = await api.get<Offer>(`${APIRoute.Hotels}/${offerId}`);
     dispatch(loadOffer(data));
   }
@@ -66,9 +69,7 @@ export const addReviewAction = createAsyncThunk<void, NewReview, {
 }>(
   'data/setNewReview',
   async ({offerId, comment, rating}, {dispatch, extra: api}) => {
-    dispatch(setPostReviewLoadingStatus(true));
     const {data} = await api.post<Reviews>(`${APIRoute.Reviews}/${offerId}`, {comment, rating});
-    dispatch(setPostReviewLoadingStatus(false));
     dispatch(loadReviews(data));
   }
 );

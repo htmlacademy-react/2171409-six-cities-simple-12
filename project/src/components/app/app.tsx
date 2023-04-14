@@ -24,7 +24,7 @@ function App(): JSX.Element {
     <HistoryRouter history={browserHistory}>
       <Routes>
         <Route path={AppRoute.Main} element={<Layout />}>
-          <Route index element={<MainScreen authorizationStatus={authorizationStatus} />} />
+          <Route index element={<MainScreen />} />
           <Route path={AppRoute.Login} element={<Login />} />
           <Route path={`${AppRoute.Room}/:id`} element={<PropertyScreen />} />
           <Route path='*' element={<ErrorScreen />} />

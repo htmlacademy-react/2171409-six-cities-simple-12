@@ -11,7 +11,7 @@ function CommentFormComponent(props: CommentFormComponentProps): JSX.Element {
   const { offerId } = props;
   const [formData, setFormData] = useState<NewReview>({ offerId: offerId, comment: '', rating: 0 });
   const dispatch = useAppDispatch();
-  const setPostReviewLoadingStatus = useAppSelector((state) => state.isReviewLoading);
+  const reviewLoadingStatus = useAppSelector((state) => state.isReviewLoading);
   const [isSubmitActive, setIsSubmitActive] = useState<boolean>(false);
   useEffect(() => {
     setIsSubmitActive(Number(formData.rating) === 0 || (formData.comment.length < 50 || formData.comment.length > 300));
@@ -71,7 +71,7 @@ function CommentFormComponent(props: CommentFormComponentProps): JSX.Element {
         <p className='reviews__help'>
           To submit review please make sure to set <span className='reviews__star'>rating</span> and describe your stay with at least <b className='reviews__text-amount'>50 characters</b>.
         </p>
-        <button className='reviews__submit form__submit button' type='submit' disabled={isSubmitActive || setPostReviewLoadingStatus}>Submit</button>
+        <button className='reviews__submit form__submit button' type='submit' disabled={isSubmitActive || reviewLoadingStatus}>Submit</button>
       </div>
     </form>
   );

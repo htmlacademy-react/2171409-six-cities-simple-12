@@ -29,7 +29,7 @@ function ReviewsComponent(props: ReviewsComponentProps) {
           &&
           reviews.map((review) => (
             <ReviewComponent review={review} key={review.id} />
-          ))
+          )).reverse()
         }
       </ul>
     </>

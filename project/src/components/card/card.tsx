@@ -10,7 +10,7 @@ type CardComponentProps = {
 
 function CardComponent({ offer, setActiveOffer }: CardComponentProps): JSX.Element {
   const { id } = offer;
-  const offerId = `${AppRoute.Room}/${id}`;
+  const offerId = `${id}`;
   function mouseOverHandler() {
     setActiveOffer(id);
   }
@@ -24,7 +24,7 @@ function CardComponent({ offer, setActiveOffer }: CardComponentProps): JSX.Eleme
         <span>{offer.isPremium ? 'Premium' : 'Standart'}</span>
       </div>
       <div className='cities__image-wrapper place-card__image-wrapper'>
-        <Link to={offerId}>
+        <Link to={`${AppRoute.Room}/${offerId}`}>
           <img
             className='place-card__image'
             src={`${offer.previewImage}`}
@@ -48,7 +48,7 @@ function CardComponent({ offer, setActiveOffer }: CardComponentProps): JSX.Eleme
           </div>
         </div>
         <h2 className='place-card__name'>
-          <Link to={`offer/${offer.id}`}>{offer.title}</Link>
+          <Link to={`${AppRoute.Room}/${offerId}`}>{offer.title}</Link>
         </h2>
         <p className='place-card__type'>{getUppercase(offer.type)}</p>
       </div>

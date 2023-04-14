@@ -10,21 +10,22 @@ import { fetchOfferAction, fetchOffersNearbyAction } from '../../store/api-actio
 import { useEffect } from 'react';
 
 function PropertyScreen(): JSX.Element {
-  const offers = useAppSelector((state) => state.offers);
+  // const offers = useAppSelector((state) => state.offers);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const similarOffers = useAppSelector((state) => state.offersNearby);
+  const similarOffers = useAppSelector(({ offersNearby }) => offersNearby);
   const { id } = useParams();
   const offerId = Number(id);
   const dispatch = useAppDispatch();
+  const selectedOffer = useAppSelector(({ offer }) => offer);
+  // const selectedOffer = offers.find((element) => element.id === offerId);
   useEffect(() => {
     dispatch(fetchOfferAction(offerId));
     dispatch(fetchOffersNearbyAction(offerId));
   }, [dispatch, offerId]);
-
-  const selectedOffer = offers.find((element) => element.id === offerId);
   if (!selectedOffer) {
     return (<Navigate to={AppRoute.Empty} replace />);
   }
+
 
   const styleProp = { height: '579px', width: '1144px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '50px' };
 
@@ -33,9 +34,7 @@ function PropertyScreen(): JSX.Element {
       <section className='property'>
         <div className='property__gallery-container container'>
           <div className='property__gallery'>
-            {
-              selectedOffer.images.map((link) => <ImagesComponent link={link} key={link} />).slice(0, 6)
-            }
+            {selectedOffer.images.map((link) => <ImagesComponent link={link} key={link} />).slice(0, 6)}
           </div>
         </div>
         <div className='property__container container'>
