@@ -1,14 +1,27 @@
 import { Navigate, useParams } from 'react-router-dom';
 import ImagesComponent from '../../components/images/images';
 import MapComponent from '../../components/map/map-component';
-import { AppRoute } from '../../const';
-import { useAppSelector } from '../../hooks/store';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { calcRating } from '../../utils';
+import ReviewsComponent from '../../components/reviews/reviews';
+import CommentFormComponent from '../../components/form/form';
+import { fetchOfferAction, fetchOffersNearbyAction } from '../../store/api-actions';
+import { useEffect } from 'react';
 
 function PropertyScreen(): JSX.Element {
-  const { id } = useParams();
   const offers = useAppSelector((state) => state.offers);
-  const selectedOffer = offers.find((element) => element.id === Number(id));
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const similarOffers = useAppSelector((state) => state.offersNearby);
+  const { id } = useParams();
+  const offerId = Number(id);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchOfferAction(offerId));
+    dispatch(fetchOffersNearbyAction(offerId));
+  }, [dispatch, offerId]);
+
+  const selectedOffer = offers.find((element) => element.id === offerId);
   if (!selectedOffer) {
     return (<Navigate to={AppRoute.Empty} replace />);
   }
@@ -84,22 +97,57 @@ function PropertyScreen(): JSX.Element {
                 <p className='property__text'>
                   {selectedOffer.description}
                 </p>
-                {/* <p className='property__text'>
+                <p className='property__text'>
                   An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
-                </p> */}
+                </p>
               </div>
             </div>
-            {/* <section className='property__reviews reviews'>
-                <h2 className='reviews__title'>Reviews · <span className='reviews__amount'>{reviews.length}</span></h2>
-                <ReviewsComponent reviews={reviews} />
-                <CommentFormComponent />
-              </section> */}
+            <section className='property__reviews reviews'>
+              <ReviewsComponent offerId={offerId} />
+              {authorizationStatus && authorizationStatus === AuthorizationStatus.Auth ? <CommentFormComponent offerId={offerId} /> : ''}
+            </section>
           </div>
         </div>
-        <MapComponent className='map' offers={offers} style={styleProp} activeOffer={selectedOffer.id} />
+        <MapComponent className='map' offers={similarOffers.concat(selectedOffer)} style={styleProp} activeOffer={selectedOffer.id} />
       </section>
       <div className='container'>
+        {/* <section className='near-places places'>
+          <h2 className='near-places__title'>Other places in the neighbourhood</h2>
+          <div className='near-places__list places__list'>
 
+            <article className='near-places__card place-card'>
+              <div className='near-places__image-wrapper place-card__image-wrapper'>
+                <a href='/'>
+                  <img
+                    className='place-card__image'
+                    src='img/room.jpg'
+                    width={260}
+                    height={200}
+                    alt='Place_image'
+                  />
+                </a>
+              </div>
+              <div className='place-card__info'>
+                <div className='place-card__price-wrapper'>
+                  <div className='place-card__price'>
+                    <b className='place-card__price-value'>€80</b>
+                    <span className='place-card__price-text'>/&nbsp;night</span>
+                  </div>
+                </div>
+                <div className='place-card__rating rating'>
+                  <div className='place-card__stars rating__stars'>
+                    <span style={{ width: '80%' }} />
+                    <span className='visually-hidden'>Rating</span>
+                  </div>
+                </div>
+                <h2 className='place-card__name'>
+                  <Link to='#'>Wood and stone place</Link>
+                </h2>
+                <p className='place-card__type'>Private room</p>
+              </div>
+            </article>
+          </div>
+        </section> */}
       </div>
     </main>
 

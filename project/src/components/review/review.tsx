@@ -1,5 +1,5 @@
 import { Review } from '../../types/offer';
-import { formatDate, formatDatetoIso } from '../../utils';
+import { calcRating, formatDate, formatDatetoIso } from '../../utils';
 
 type ReviewComponentProps = {
   review: Review;
@@ -21,7 +21,7 @@ function ReviewComponent(props: ReviewComponentProps) {
       <div className='reviews__info'>
         <div className='reviews__rating rating'>
           <div className='reviews__stars rating__stars'>
-            <span style={{ width: '80%' }} />
+            <span style={{ width: calcRating(review.rating) }} />
             <span className='visually-hidden'>Rating</span>
           </div>
         </div>

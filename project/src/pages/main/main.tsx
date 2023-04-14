@@ -19,9 +19,9 @@ function MainScreen(props: MainScreenProps): JSX.Element {
   const { authorizationStatus } = props;
   const [activeOffer, setActiveOffer] = useState<null | number>(null);
   const dispatch = useAppDispatch();
-  const selectedCity = useAppSelector((state) => state.city);
-  const currentOffers = useAppSelector((state) => state.offers.filter((offer) => offer.city.name === selectedCity.name));
-  const activeSortType = useAppSelector((state) => state.sortOption);
+  const selectedCity = useAppSelector(({city}) => city);
+  const currentOffers = useAppSelector(({offers}) => offers.filter((offer) => offer.city.name === selectedCity.name));
+  const activeSortType = useAppSelector(({sortOption}) => sortOption);
   const sortedOffers = sortOffers(currentOffers, activeSortType);
 
   const handleChangeCity = (e: React.MouseEvent<HTMLAnchorElement>, city: City) => {
