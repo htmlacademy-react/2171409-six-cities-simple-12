@@ -13,7 +13,9 @@ function ReviewsComponent(props: ReviewsComponentProps) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchReviewAction(offerId));
+    if (dispatch(fetchReviewAction.fulfilled)) {
+      dispatch(fetchReviewAction(offerId));
+    }
   }, [offerId, dispatch]);
 
   const reviews = useAppSelector((state) => state.reviews);

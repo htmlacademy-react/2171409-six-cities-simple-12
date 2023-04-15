@@ -14,8 +14,10 @@ function CommentFormComponent(props: CommentFormComponentProps): JSX.Element {
   const reviewLoadingStatus = useAppSelector((state) => state.isReviewLoading);
   const [isSubmitActive, setIsSubmitActive] = useState<boolean>(false);
   useEffect(() => {
-    setIsSubmitActive(Number(formData.rating) === 0 || (formData.comment.length < 50 || formData.comment.length > 300));
-  }, [formData]);
+    if (dispatch(addReviewAction.fulfilled)) {
+      setIsSubmitActive(Number(formData.rating) === 0 || (formData.comment.length < 50 || formData.comment.length > 300));
+    }
+  }, [dispatch, formData]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;

@@ -17,11 +17,12 @@ function PropertyScreen(): JSX.Element {
   const offerId = Number(id);
   const dispatch = useAppDispatch();
   const selectedOffer = useAppSelector(({ offer }) => offer);
-  // const selectedOffer = offers.find((element) => element.id === offerId);
+
   useEffect(() => {
     dispatch(fetchOfferAction(offerId));
     dispatch(fetchOffersNearbyAction(offerId));
   }, [dispatch, offerId]);
+
   if (!selectedOffer) {
     return (<Navigate to={AppRoute.Empty} replace />);
   }

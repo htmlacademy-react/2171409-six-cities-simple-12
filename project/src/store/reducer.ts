@@ -18,7 +18,6 @@ type initialStateType = {
   userData: UserData | null;
   isReviewLoading: boolean;
   formData: NewReview | null;
-  status: string;
 }
 
 const initialState: initialStateType = {
@@ -33,7 +32,6 @@ const initialState: initialStateType = {
   authorizationStatus: AuthorizationStatus.Unknown,
   userData: null,
   formData: null,
-  status: 'idle',
   isReviewLoading: false,
 };
 
