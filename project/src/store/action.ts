@@ -21,6 +21,8 @@ export const loadReviews = createAction<Reviews>('reviews/loadReviews');
 export const setReview = createAction<NewReview, string>('reviews/setNewReview');
 export const setReviewLoading = createAction<boolean>('reviews/setUserReview');
 
+export const setOfferLoading = createAction<boolean>('offers/setOfferLoading');
+
 export const setAuthorizationStatus = createAction<AuthorizationStatus>('user/setAuthorizationStatus');
 export const getUserData = createAction('user/loadUserData',(userData: UserData) => ({payload: userData}));
 export const redirectToRoute = createAction<AppRoute>('app/redirectToRoute');

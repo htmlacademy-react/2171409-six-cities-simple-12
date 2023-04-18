@@ -8,25 +8,30 @@ import ReviewsComponent from '../../components/reviews/reviews';
 import CommentFormComponent from '../../components/form/form';
 import { fetchOfferAction, fetchOffersNearbyAction } from '../../store/api-actions';
 import { useEffect } from 'react';
+import { loadOffer } from '../../store/action';
+import { Offer } from '../../types/offer';
+import LoaderComponent from '../../components/loader/loader';
 
 function PropertyScreen(): JSX.Element {
-  // const offers = useAppSelector((state) => state.offers);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const similarOffers = useAppSelector(({ offersNearby }) => offersNearby);
   const { id } = useParams();
   const offerId = Number(id);
   const dispatch = useAppDispatch();
   const selectedOffer = useAppSelector(({ offer }) => offer);
-
+  const isOfferLoading = useAppSelector((state) => state.isOfferLoading);
   useEffect(() => {
     dispatch(fetchOfferAction(offerId));
     dispatch(fetchOffersNearbyAction(offerId));
   }, [dispatch, offerId]);
 
-  if (!selectedOffer) {
-    return (<Navigate to={AppRoute.Empty} replace />);
-  }
+  useEffect(() => () => {
+    dispatch(loadOffer(null as unknown as Offer));
+  }, [dispatch]);
 
+  if (!selectedOffer && !isOfferLoading) {
+    return (<Navigate to={AppRoute.Empty} replace />);
+  } else if (!selectedOffer) { return <LoaderComponent />; }
 
   const styleProp = { height: '579px', width: '1144px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '50px' };
 

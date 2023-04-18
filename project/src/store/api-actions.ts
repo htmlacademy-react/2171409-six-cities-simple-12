@@ -2,7 +2,7 @@ import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, State} from '../types/state';
 import {APIRoute, AppRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR} from '../const';
-import { getUserData, loadOffer, loadOffers, loadOffersNearby, loadReviews, redirectToRoute, setAuthorizationStatus, setError, setRoomsLoadingStatus } from './action';
+import { getUserData, loadOffer, loadOffers, loadOffersNearby, loadReviews, redirectToRoute, setAuthorizationStatus, setError, setOfferLoading, setRoomsLoadingStatus } from './action';
 import { Offers, Reviews, OfferId, Offer, NewReview } from '../types/offer';
 import { dropToken, saveToken } from '../services/token';
 import { UserData } from '../types/user-data';
@@ -33,8 +33,10 @@ export const fetchOfferAction = createAsyncThunk<void, OfferId, {
     if (!offerId) {
       dispatch(redirectToRoute(AppRoute.Main));
     }
+    dispatch(setOfferLoading(true));
     const { data } = await api.get<Offer>(`${APIRoute.Hotels}/${offerId}`);
     dispatch(loadOffer(data));
+    dispatch(setOfferLoading(false));
   }
 );
 

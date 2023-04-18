@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useEffect } from 'react';
 import { fetchReviewAction } from '../../store/api-actions';
 import { OfferId } from '../../types/offer';
@@ -11,14 +12,12 @@ type ReviewsComponentProps = {
 function ReviewsComponent(props: ReviewsComponentProps) {
   const { offerId } = props;
   const dispatch = useAppDispatch();
+  const reviews = useAppSelector((state) => state.reviews);
 
   useEffect(() => {
-    if (dispatch(fetchReviewAction.fulfilled)) {
-      dispatch(fetchReviewAction(offerId));
-    }
+    dispatch(fetchReviewAction(offerId));
   }, [offerId, dispatch]);
 
-  const reviews = useAppSelector((state) => state.reviews);
 
   return (
     <>

@@ -18,6 +18,7 @@ type initialStateType = {
   userData: UserData | null;
   isReviewLoading: boolean;
   formData: NewReview | null;
+  isOfferLoading: boolean;
 }
 
 const initialState: initialStateType = {
@@ -33,6 +34,7 @@ const initialState: initialStateType = {
   userData: null,
   formData: null,
   isReviewLoading: false,
+  isOfferLoading: true,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -43,23 +45,23 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(changeOffersSort, (state, action) => {
       state.sortOption = action.payload;
     })
-    .addCase(loadOffers, (state, actions) => {
-      state.offers = actions.payload;
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
     })
-    .addCase(loadOffer, (state, actions) => {
-      state.offer = actions.payload;
+    .addCase(loadOffer, (state, action) => {
+      state.offer = action.payload;
     })
-    .addCase(loadOffersNearby, (state, actions) => {
-      state.offersNearby = actions.payload;
-    })
-    .addCase(loadReviews, (state, actions) => {
-      state.reviews = actions.payload;
+    .addCase(loadOffersNearby, (state, action) => {
+      state.offersNearby = action.payload;
     })
     .addCase(setReview, (state, { payload }) => {
       state.formData = payload;
     })
-    .addCase(setRoomsLoadingStatus, (state, actions) => {
-      state.isRoomsLoading = actions.payload;
+    .addCase(loadReviews, (state, action) => {
+      state.reviews = action.payload;
+    })
+    .addCase(setRoomsLoadingStatus, (state, action) => {
+      state.isRoomsLoading = action.payload;
     })
     .addCase(setAuthorizationStatus, (state, action) => {
       state.authorizationStatus = action.payload;
@@ -67,6 +69,9 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setError, (state, action) => {
       state.error = action.payload;
     })
+    // .addCase(fetchReviewAction.fulfilled, (state, actions) => {
+    //   state.reviews = actions.payload;
+    // })
     .addCase(getUserData, (state, action) => {
       state.userData = action.payload;
     });
