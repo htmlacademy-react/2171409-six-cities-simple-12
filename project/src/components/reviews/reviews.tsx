@@ -1,19 +1,39 @@
-import { Reviews } from '../../types/offer';
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { useEffect } from 'react';
+import { fetchReviewAction } from '../../store/api-actions';
+import { OfferId } from '../../types/offer';
 import ReviewComponent from '../review/review';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
 
 type ReviewsComponentProps = {
-  reviews: Reviews;
+  offerId: OfferId;
 }
 
 function ReviewsComponent(props: ReviewsComponentProps) {
-  const { reviews } = props;
+  const { offerId } = props;
+  const dispatch = useAppDispatch();
+  const reviews = useAppSelector((state) => state.reviews);
+
+  useEffect(() => {
+    dispatch(fetchReviewAction(offerId));
+  }, [offerId, dispatch]);
+
 
   return (
-    <ul className='reviews__list'>
-      {reviews.map((review) => (
-        <ReviewComponent review={review} key={review.id} />
-      ))}
-    </ul>
+    <>
+      <h2 className='reviews__title'>Reviews · <span className='reviews__amount'>{reviews.length}</span></h2>
+      <ul className='reviews__list'>
+        {
+          reviews
+          &&
+          reviews.length > 0
+          &&
+          reviews.map((review) => (
+            <ReviewComponent review={review} key={review.id} />
+          )).reverse()
+        }
+      </ul>
+    </>
   );
 }
 

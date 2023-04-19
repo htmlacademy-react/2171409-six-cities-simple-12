@@ -1,30 +1,41 @@
 import { CITY } from './../mocks/city';
 import {createReducer} from '@reduxjs/toolkit';
-import { changeOffersSort, getUserData, loadOffers, setActiveCity, setAuthorizationStatus, setError, setRoomsLoadingStatus } from './action';
+import { changeOffersSort, getUserData, loadOffer, loadOffers, loadOffersNearby, loadReviews, setActiveCity, setAuthorizationStatus, setError, setRoomsLoadingStatus } from './action';
 import { AuthorizationStatus, SortMenuItems } from '../const';
-import { City, Offers } from '../types/offer';
+import { City, NewReview, Offer, Offers, Reviews } from '../types/offer';
 import { UserData } from '../types/user-data';
 
 type initialStateType = {
   city: City;
   offers: Offers;
+  offer: Offer | null;
+  offersNearby: Offers;
+  reviews:Reviews;
   sortOption: string;
   isRoomsLoading: boolean;
   error: string | null;
   authorizationStatus: AuthorizationStatus;
   userData: UserData | null;
+  isReviewLoading: boolean;
+  formData: NewReview | null;
+  isOfferLoading: boolean;
 }
 
 const initialState: initialStateType = {
   city: CITY,
   offers: [],
+  offer: null,
+  offersNearby: [],
+  reviews:[],
   sortOption: SortMenuItems[0],
   isRoomsLoading: false,
   error: null,
   authorizationStatus: AuthorizationStatus.Unknown,
   userData: null,
+  formData: null,
+  isReviewLoading: false,
+  isOfferLoading: true,
 };
-
 
 const reducer = createReducer(initialState, (builder) => {
   builder
@@ -34,11 +45,20 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(changeOffersSort, (state, action) => {
       state.sortOption = action.payload;
     })
-    .addCase(loadOffers, (state, actions) => {
-      state.offers = actions.payload;
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
     })
-    .addCase(setRoomsLoadingStatus, (state, actions) => {
-      state.isRoomsLoading = actions.payload;
+    .addCase(loadOffer, (state, action) => {
+      state.offer = action.payload;
+    })
+    .addCase(loadOffersNearby, (state, action) => {
+      state.offersNearby = action.payload;
+    })
+    .addCase(loadReviews, (state, action) => {
+      state.reviews = action.payload;
+    })
+    .addCase(setRoomsLoadingStatus, (state, action) => {
+      state.isRoomsLoading = action.payload;
     })
     .addCase(setAuthorizationStatus, (state, action) => {
       state.authorizationStatus = action.payload;

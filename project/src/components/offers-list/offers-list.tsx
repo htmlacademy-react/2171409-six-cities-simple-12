@@ -12,7 +12,7 @@ function OffersListComponent(props: OffersListComponentProps) {
   return (
     <div className='cities__places-list places__list tabs__content'>
       {
-        offers.map((offer) => <CardComponent key={offer.id} offer={offer} setActiveOffer={setActiveOffer}/>)
+        offers.map((offer) => <CardComponent key={offer.id} offer={offer} setActiveOffer={setActiveOffer} />)
       }
     </div>
   );

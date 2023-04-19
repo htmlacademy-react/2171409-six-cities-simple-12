@@ -13,8 +13,10 @@ export type Offer = {
   host: User;
   description: string;
   location: Location;
-  id: number;
+  id: OfferId;
 };
+
+export type OfferId = number;
 
 export type City = {
   name: string;
@@ -40,8 +42,15 @@ export type Review = {
   comment: string;
   date: string;
   id: number;
+  offerId: OfferId;
   rating: number;
   user: User;
+};
+
+export type NewReview = {
+  offerId: OfferId;
+  comment: string;
+  rating: number;
 };
 
 export type Offers = Offer[];
