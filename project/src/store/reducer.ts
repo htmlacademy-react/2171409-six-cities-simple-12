@@ -1,6 +1,6 @@
 import { CITY } from './../mocks/city';
 import {createReducer} from '@reduxjs/toolkit';
-import { changeOffersSort, getUserData, loadOffer, loadOffers, loadOffersNearby, loadReviews, setActiveCity, setAuthorizationStatus, setError, setReview, setRoomsLoadingStatus } from './action';
+import { changeOffersSort, getUserData, loadOffer, loadOffers, loadOffersNearby, loadReviews, setActiveCity, setAuthorizationStatus, setError, setRoomsLoadingStatus } from './action';
 import { AuthorizationStatus, SortMenuItems } from '../const';
 import { City, NewReview, Offer, Offers, Reviews } from '../types/offer';
 import { UserData } from '../types/user-data';
@@ -54,9 +54,6 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadOffersNearby, (state, action) => {
       state.offersNearby = action.payload;
     })
-    .addCase(setReview, (state, { payload }) => {
-      state.formData = payload;
-    })
     .addCase(loadReviews, (state, action) => {
       state.reviews = action.payload;
     })
@@ -69,9 +66,6 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setError, (state, action) => {
       state.error = action.payload;
     })
-    // .addCase(fetchReviewAction.fulfilled, (state, actions) => {
-    //   state.reviews = actions.payload;
-    // })
     .addCase(getUserData, (state, action) => {
       state.userData = action.payload;
     });

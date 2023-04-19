@@ -1,6 +1,6 @@
 import { AppRoute, AuthorizationStatus } from '../const';
 import { UserData } from '../types/user-data';
-import { City, NewReview, Offer, Offers, Reviews } from './../types/offer';
+import { City, Offer, Offers, Reviews } from './../types/offer';
 import {createAction} from '@reduxjs/toolkit';
 
 export const setActiveCity = createAction('offers/cityChange', (city: City) => ({
@@ -18,8 +18,8 @@ export const setRoomsLoadingStatus = createAction<boolean>('offers/setRoomsLoadi
 export const setError = createAction<string | null>('offers/setError');
 
 export const loadReviews = createAction<Reviews>('reviews/loadReviews');
-export const setReview = createAction<NewReview, string>('reviews/setNewReview');
-export const setReviewLoading = createAction<boolean>('reviews/setUserReview');
+// export const setReview = createAction<NewReview, string>('reviews/setNewReview');
+// export const setReviewLoading = createAction<boolean>('reviews/setUserReview');
 
 export const setOfferLoading = createAction<boolean>('offers/setOfferLoading');
 

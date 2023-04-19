@@ -7,7 +7,6 @@ import { Offers, Reviews, OfferId, Offer, NewReview } from '../types/offer';
 import { dropToken, saveToken } from '../services/token';
 import { UserData } from '../types/user-data';
 import { AuthData } from '../types/auth-data';
-import {store} from './';
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -121,11 +120,14 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   },
 );
 
-export const clearErrorAction = createAsyncThunk(
+export const clearErrorAction = createAsyncThunk<void, undefined, {
+  dispatch: AppDispatch;
+  state: State;
+}>(
   'offers/clearError',
-  () => {
+  (_arg, {dispatch, extra: api}) => {
     setTimeout(
-      () => store.dispatch(setError(null)),
+      () => dispatch(setError(null)),
       TIMEOUT_SHOW_ERROR,
     );
   },

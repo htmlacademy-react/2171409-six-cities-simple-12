@@ -1,7 +1,7 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { NewReview, OfferId } from '../../types/offer';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
-import { addReviewAction } from '../../store/api-actions';
+import { addReviewAction, fetchReviewAction } from '../../store/api-actions';
 
 type CommentFormComponentProps = {
   offerId: OfferId;
@@ -14,10 +14,13 @@ function CommentFormComponent(props: CommentFormComponentProps): JSX.Element {
   const reviewLoadingStatus = useAppSelector((state) => state.isReviewLoading);
   const [isSubmitActive, setIsSubmitActive] = useState<boolean>(false);
   useEffect(() => {
-    if (dispatch(addReviewAction.fulfilled)) {
-      setIsSubmitActive(Number(formData.rating) === 0 || (formData.comment.length < 50 || formData.comment.length > 300));
-    }
-  }, [dispatch, formData]);
+    setIsSubmitActive(Number(formData.rating) === 0 || (formData.comment.length < 50 || formData.comment.length > 300));
+  }, [formData]);
+
+  useEffect(() => () => {
+    dispatch(fetchReviewAction(offerId));
+  }, [dispatch, formData, offerId]);
+
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
