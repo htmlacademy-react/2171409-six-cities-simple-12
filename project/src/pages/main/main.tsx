@@ -3,7 +3,7 @@ import { sortOffers } from '../../const';
 import { setActiveCity } from '../../store/action';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import SortList from '../../components/sort-list/sort-list';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import MainScreenEmpty from '../main-empty/main-empty';
 import { HeaderMenu } from '../../components/header-menu/header-menu';
 import OffersListComponent from '../../components/offers-list/offers-list';
@@ -15,8 +15,9 @@ function MainScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const selectedCity = useAppSelector(({ city }) => city);
   const currentOffers = useAppSelector(({ offers }) => offers.filter((offer) => offer.city.name === selectedCity.name));
+  const currentedOffers = useMemo(() => currentOffers, [currentOffers]);
   const activeSortType = useAppSelector(({ sortOption }) => sortOption);
-  const sortedOffers = sortOffers(currentOffers, activeSortType);
+  const sortedOffers = sortOffers(currentedOffers, activeSortType);
 
   const handleChangeCity = (e: React.MouseEvent<HTMLAnchorElement>, city: City) => {
     e.preventDefault();

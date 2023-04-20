@@ -26,7 +26,9 @@ function App(): JSX.Element {
         <Route path={AppRoute.Main} element={<Layout />}>
           <Route index element={<MainScreen />} />
           <Route path={AppRoute.Login} element={<Login />} />
-          <Route path={`${AppRoute.Room}/:id`} element={<PropertyScreen />} />
+          <Route path={AppRoute.Room}>
+            <Route path=':id' element={<PropertyScreen />} />
+          </Route>
           <Route path='*' element={<ErrorScreen />} />
         </Route>
       </Routes>
