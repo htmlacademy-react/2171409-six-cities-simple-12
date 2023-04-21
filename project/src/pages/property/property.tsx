@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import ImagesComponent from '../../components/images/images';
 import MapComponent from '../../components/map/map-component';
@@ -7,12 +8,14 @@ import { calcRating } from '../../utils';
 import ReviewsComponent from '../../components/reviews/reviews';
 import CommentFormComponent from '../../components/form/form';
 import { fetchOfferAction, fetchOffersNearbyAction } from '../../store/api-actions';
-import { useEffect } from 'react';
 import { loadOffer } from '../../store/action';
 import { Offer } from '../../types/offer';
 import LoaderComponent from '../../components/loader/loader';
+import OffersListNearComponent from '../../components/offers-near/offers-near';
 
 function PropertyScreen(): JSX.Element {
+  const [activeOffer, setActiveOffer] = useState<null | number>(null);
+
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const similarOffers = useAppSelector(({ offersNearby }) => offersNearby);
   const { id } = useParams();
@@ -20,7 +23,16 @@ function PropertyScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const selectedOffer = useAppSelector(({ offer }) => offer);
   const isOfferLoading = useAppSelector((state) => state.isOfferLoading);
+  const ref = useRef<HTMLDivElement>(null);
+  const goToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
   useEffect(() => {
+    goToTop();
     dispatch(fetchOfferAction(offerId));
     dispatch(fetchOffersNearbyAction(offerId));
   }, [dispatch, offerId]);
@@ -36,7 +48,7 @@ function PropertyScreen(): JSX.Element {
   const styleProp = { height: '579px', width: '1144px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '50px' };
 
   return (
-    <main className='page page__main page__main--property'>
+    <main ref={ref} className='page page__main page__main--property'>
       <section className='property'>
         <div className='property__gallery-container container'>
           <div className='property__gallery'>
@@ -113,46 +125,15 @@ function PropertyScreen(): JSX.Element {
             </section>
           </div>
         </div>
-        <MapComponent className='map' offers={similarOffers.concat(selectedOffer)} style={styleProp} activeOffer={selectedOffer.id} />
+        <MapComponent className='map' offers={similarOffers.concat(selectedOffer)} style={styleProp} activeOffer={selectedOffer.id && activeOffer} />
       </section>
       <div className='container'>
-        {/* <section className='near-places places'>
+        <section className='near-places places'>
           <h2 className='near-places__title'>Other places in the neighbourhood</h2>
           <div className='near-places__list places__list'>
-
-            <article className='near-places__card place-card'>
-              <div className='near-places__image-wrapper place-card__image-wrapper'>
-                <a href='/'>
-                  <img
-                    className='place-card__image'
-                    src='img/room.jpg'
-                    width={260}
-                    height={200}
-                    alt='Place_image'
-                  />
-                </a>
-              </div>
-              <div className='place-card__info'>
-                <div className='place-card__price-wrapper'>
-                  <div className='place-card__price'>
-                    <b className='place-card__price-value'>€80</b>
-                    <span className='place-card__price-text'>/&nbsp;night</span>
-                  </div>
-                </div>
-                <div className='place-card__rating rating'>
-                  <div className='place-card__stars rating__stars'>
-                    <span style={{ width: '80%' }} />
-                    <span className='visually-hidden'>Rating</span>
-                  </div>
-                </div>
-                <h2 className='place-card__name'>
-                  <Link to='#'>Wood and stone place</Link>
-                </h2>
-                <p className='place-card__type'>Private room</p>
-              </div>
-            </article>
+            <OffersListNearComponent offers={similarOffers} setActiveOffer={setActiveOffer} />
           </div>
-        </section> */}
+        </section>
       </div>
     </main>
 

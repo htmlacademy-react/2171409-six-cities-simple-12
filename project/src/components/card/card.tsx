@@ -11,15 +11,9 @@ type CardComponentProps = {
 function CardComponent({ offer, setActiveOffer }: CardComponentProps): JSX.Element {
   const { id } = offer;
   const offerId = `${id}`;
-  function mouseOverHandler() {
-    setActiveOffer(id);
-  }
 
-  function mouseLeaveHandler() {
-    setActiveOffer(null);
-  }
   return (
-    <article className='cities__card place-card' onMouseOver={mouseOverHandler} onMouseLeave={mouseLeaveHandler}>
+    <article className='cities__card place-card' onMouseEnter={(e) => setActiveOffer ? setActiveOffer(id) : e.stopPropagation()}>
       <div className='place-card__mark'>
         <span>{offer.isPremium ? 'Premium' : 'Standart'}</span>
       </div>
