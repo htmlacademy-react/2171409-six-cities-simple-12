@@ -18,8 +18,6 @@ export const setRoomsLoadingStatus = createAction<boolean>('offers/setRoomsLoadi
 export const setError = createAction<string | null>('offers/setError');
 
 export const loadReviews = createAction<Reviews>('reviews/loadReviews');
-// export const setReview = createAction<NewReview, string>('reviews/setNewReview');
-// export const setReviewLoading = createAction<boolean>('reviews/setUserReview');
 
 export const setOfferLoading = createAction<boolean>('offers/setOfferLoading');
 
