@@ -17,8 +17,9 @@ function MainScreen(): JSX.Element {
   const currentOffers = useAppSelector(({ offers }) => offers.filter((offer) => offer.city.name === selectedCity.name));
   const currentedOffers = useMemo(() => currentOffers, [currentOffers]);
   const activeSortType = useAppSelector(({ sortOption }) => sortOption);
-  const sortedOffers = sortOffers(currentedOffers, activeSortType);
-
+  const sortedOffers = (sortOffers(currentedOffers, activeSortType)).slice(0, 6);
+  const memoizedSortedOffers = useMemo(() => sortedOffers, [sortedOffers]);
+  const memoizedOfferList = useMemo(() => <OffersListComponent offers={memoizedSortedOffers} setActiveOffer={setActiveOffer} />, [memoizedSortedOffers, setActiveOffer]);
   const handleChangeCity = (e: React.MouseEvent<HTMLAnchorElement>, city: City) => {
     e.preventDefault();
     dispatch(setActiveCity(city));
@@ -51,7 +52,9 @@ function MainScreen(): JSX.Element {
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">{currentOffers.length}&nbsp;{currentOffers.length <= 1 ? 'place' : 'places'} to stay in {selectedCity.name}</b>
                 <SortList selectedSortItem={activeSortType} />
-                <OffersListComponent offers={sortedOffers} setActiveOffer={setActiveOffer} />
+
+                {memoizedOfferList}
+
               </section>
               <div className="cities__right-section">
                 <MapComponent className='cities__map map' activeOffer={activeOffer} offers={currentOffers} style={{ height: '1100px' }} />
