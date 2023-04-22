@@ -7,7 +7,7 @@ type OffersListComponentProps = {
   setActiveOffer: (id: number | null) => void;
 }
 
-const OffersListComponent: React.FC<OffersListComponentProps> = memo((props: OffersListComponentProps) => {
+function OffersListComponent(props: OffersListComponentProps): JSX.Element {
   const { offers, setActiveOffer } = props;
   return (
     <div className='cities__places-list places__list tabs__content'>
@@ -16,7 +16,6 @@ const OffersListComponent: React.FC<OffersListComponentProps> = memo((props: Off
       }
     </div>
   );
-});
-OffersListComponent.displayName = 'OffersListComponent';
+}
 
-export default OffersListComponent;
+export default memo(OffersListComponent);

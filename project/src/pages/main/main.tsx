@@ -14,17 +14,22 @@ function MainScreen(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<null | number>(null);
   const dispatch = useAppDispatch();
   const selectedCity = useAppSelector(({ city }) => city);
-  const currentOffers = useAppSelector(({ offers }) => offers.filter((offer) => offer.city.name === selectedCity.name));
-  const currentedOffers = useMemo(() => currentOffers, [currentOffers]);
+
+  const offers = useAppSelector((state) => state.offers);
+
   const activeSortType = useAppSelector(({ sortOption }) => sortOption);
-  const sortedOffers = (sortOffers(currentedOffers, activeSortType));
-  const memoizedSortedOffers = useMemo(() => sortedOffers, [sortedOffers]);
+
+  const currentedOffers = useMemo(() => {
+    const currentOffers = offers.filter((offer) => offer.city.name === selectedCity.name);
+    return sortOffers(currentOffers, activeSortType);
+  }, [offers, activeSortType, selectedCity.name]);
+
   const handleChangeCity = (e: React.MouseEvent<HTMLAnchorElement>, city: City) => {
     e.preventDefault();
     dispatch(setActiveCity(city));
   };
 
-  const noOffers = currentOffers.length < 1;
+  const noOffers = currentedOffers.length < 1;
 
   return (
     <main className="page__main page__main--index">
@@ -44,21 +49,19 @@ function MainScreen(): JSX.Element {
         </section>
       </div>
       <div className='cities'>
-        <div className="cities__places-container container">
-          {noOffers ? (<MainScreenEmpty cityName={selectedCity.name} />) : (
-            <>
-              <section className="cities__places places">
-                <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{currentOffers.length}&nbsp;{currentOffers.length <= 1 ? 'place' : 'places'} to stay in {selectedCity.name}</b>
-                <SortList selectedSortItem={activeSortType} />
-                <OffersListComponent offers={memoizedSortedOffers} setActiveOffer={setActiveOffer} />
-              </section>
-              <div className="cities__right-section">
-                <MapComponent className='cities__map map' activeOffer={activeOffer} offers={currentOffers} style={{ height: '1100px' }} />
-              </div>
-            </>
-          )}
-        </div>
+        {noOffers ? (<MainScreenEmpty cityName={selectedCity.name} />) : (
+          <div className="cities__places-container container">
+            <section className="cities__places places">
+              <h2 className="visually-hidden">Places</h2>
+              <b className="places__found">{currentedOffers.length}&nbsp;{currentedOffers.length <= 1 ? 'place' : 'places'} to stay in {selectedCity.name}</b>
+              <SortList selectedSortItem={activeSortType} />
+              <OffersListComponent offers={currentedOffers} setActiveOffer={setActiveOffer} />
+            </section>
+            <div className="cities__right-section">
+              <MapComponent className='cities__map map' activeOffer={activeOffer} offers={currentedOffers} style={{ height: '1100px' }} />
+            </div>
+          </div>
+        )}
       </div>
     </main>
 
