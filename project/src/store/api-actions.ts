@@ -125,7 +125,7 @@ export const clearErrorAction = createAsyncThunk<void, undefined, {
   state: State;
 }>(
   'offers/clearError',
-  (_arg, {dispatch, extra: api}) => {
+  (_arg, {dispatch}) => {
     setTimeout(
       () => dispatch(setError(null)),
       TIMEOUT_SHOW_ERROR,

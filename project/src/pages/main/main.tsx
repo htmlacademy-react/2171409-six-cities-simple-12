@@ -1,5 +1,5 @@
 import MapComponent from '../../components/map/map-component';
-import { sortOffers } from '../../const';
+import { sortOffers, LOCATIONS } from '../../const';
 import { setActiveCity } from '../../store/action';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import SortList from '../../components/sort-list/sort-list';
@@ -8,10 +8,10 @@ import MainScreenEmpty from '../main-empty/main-empty';
 import { HeaderMenu } from '../../components/header-menu/header-menu';
 import OffersListComponent from '../../components/offers-list/offers-list';
 import { City } from '../../types/offer';
-import { LOCATIONS } from '../../mocks/locations';
 
 function MainScreen(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<null | number>(null);
+
   const dispatch = useAppDispatch();
   const selectedCity = useAppSelector(({ city }) => city);
 
@@ -24,8 +24,8 @@ function MainScreen(): JSX.Element {
     return sortOffers(currentOffers, activeSortType);
   }, [offers, activeSortType, selectedCity.name]);
 
-  const handleChangeCity = (e: React.MouseEvent<HTMLAnchorElement>, city: City) => {
-    e.preventDefault();
+  const handleChangeCity = (evt: React.MouseEvent<HTMLAnchorElement>, city: City) => {
+    evt.preventDefault();
     dispatch(setActiveCity(city));
   };
 

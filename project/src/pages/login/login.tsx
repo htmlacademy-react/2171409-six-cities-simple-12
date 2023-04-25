@@ -8,27 +8,44 @@ import { AppRoute } from '../../const';
 function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [error, setError] = useState('');
+  const [isValid, setIsValid] = useState(true);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const onSubmit = (authData: AuthData) => {
-    dispatch(loginAction(authData));
-  };
+  function handleEmailChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    const emailValue = evt.target.value;
+    setEmail(emailValue);
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (emailRegex.test(emailValue) && password !== '') {
+      setError('');
+      setIsValid(false);
+    } else {
+      setIsValid(true);
+      setError('Некорректный email');
+    }
+  }
 
   const handlePasswordChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const passwordValue = evt.target.value;
     setPassword(passwordValue);
 
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{2,}$/;
 
-    if (passwordRegex.test(passwordValue)) {
-      setPasswordError('');
+    if (passwordRegex.test(passwordValue) && email !== '') {
+      setError('');
+      setIsValid(false);
     } else {
-      setPasswordError('Пароль должен содержать хотя бы одну букву и одну цифру.');
+      setIsValid(true);
+      setError('Пароль должен содержать хотя бы одну букву и одну цифру.');
     }
+  };
+
+  const onSubmit = (authData: AuthData) => {
+    dispatch(loginAction(authData));
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -55,14 +72,14 @@ function LoginScreen(): JSX.Element {
             <form className="login__form form" action="" method="post" onSubmit={handleSubmit}>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
-                <input className="login__input form__input" ref={loginRef} type="email" name="email" placeholder="Email" required />
+                <input className="login__input form__input" ref={loginRef} type="email" name="email" placeholder="Email" required onChange={handleEmailChange} value={email} />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
                 <input className="login__input form__input" ref={passwordRef} type="password" name="password" placeholder="Password" required value={password} onChange={handlePasswordChange} />
-                <span style={{ color: 'red', display: passwordError ? 'block' : 'none' }}>{passwordError}</span>
+                <span style={{ color: 'red', display: error ? 'block' : 'none' }}>{error}</span>
               </div>
-              <button className="login__submit form__submit button" type="submit">Sign in</button>
+              <button className="login__submit form__submit button" type="submit" disabled={isValid}>Sign in</button>
             </form>
           </section>
           <section className="locations locations--login locations--current">

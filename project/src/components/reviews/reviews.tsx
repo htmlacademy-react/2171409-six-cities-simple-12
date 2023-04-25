@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useEffect } from 'react';
 import { fetchReviewAction } from '../../store/api-actions';
 import { OfferId } from '../../types/offer';
