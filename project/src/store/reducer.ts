@@ -1,4 +1,4 @@
-import { CITY } from './../mocks/city';
+import { CITY } from '../const';
 import {createReducer} from '@reduxjs/toolkit';
 import { changeOffersSort, getUserData, loadOffer, loadOffers, loadOffersNearby, loadReviews, setActiveCity, setAuthorizationStatus, setError, setRoomsLoadingStatus } from './action';
 import { AuthorizationStatus, SortMenuItems } from '../const';
@@ -27,7 +27,7 @@ const initialState: initialStateType = {
   offer: null,
   offersNearby: [],
   reviews:[],
-  sortOption: SortMenuItems[0],
+  sortOption: SortMenuItems.Popular,
   isRoomsLoading: false,
   error: null,
   authorizationStatus: AuthorizationStatus.Unknown,

@@ -5,6 +5,7 @@ import { URL_POINT_ACTIVE, URL_POINT_DEFAULT } from '../../const';
 import { Icon, Marker } from 'leaflet';
 import useMap from '../../hooks/useMap';
 import { useAppSelector } from '../../hooks/store';
+import { useParams } from 'react-router-dom';
 
 type StyleMap = {
   height: string;
@@ -34,6 +35,8 @@ function MapComponent(props: MapComponentProps): JSX.Element {
   const mapRef = useRef(null);
   const selectedCity = useAppSelector(({ city }) => city);
   const map = useMap(mapRef, selectedCity);
+  const { id } = useParams();
+  const activeMarker = Number(id);
 
   useEffect(() => {
     const markers: Marker[] = [];
@@ -52,7 +55,7 @@ function MapComponent(props: MapComponentProps): JSX.Element {
         });
         marker
           .setIcon(
-            activeOffer && offer.id === activeOffer
+            activeOffer && (offer.id === activeOffer || offer.id === activeMarker)
               ? currentCustomIcon
               : defaultCustomIcon,
           )
@@ -64,12 +67,14 @@ function MapComponent(props: MapComponentProps): JSX.Element {
         addMarker(offer);
       });
 
+      map.dragging.disable();
+      map.scrollWheelZoom.disable();
     }
+
     return () => {
       markers.forEach((marker) => marker.remove());
     };
-
-  }, [map, offers, activeOffer, selectedCity]);
+  }, [map, offers, activeOffer, selectedCity, activeMarker]);
 
   return (
     <section className={className} ref={mapRef} style={style} />

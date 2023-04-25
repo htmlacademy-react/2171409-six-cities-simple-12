@@ -19,6 +19,7 @@ function SortList({ selectedSortItem }: SortListProps): JSX.Element {
     dispatch(changeOffersSort(item));
     setIsOpenSortList(false);
   }
+
   return (
     <form className='places__sorting' action='#' method='get'>
       <span className='places__sorting-caption'>Sort by</span>
@@ -30,7 +31,9 @@ function SortList({ selectedSortItem }: SortListProps): JSX.Element {
       </span>
       {isOpenSortList && (
         <ul className='places__options places__options--custom places__options--opened'>
-          {SortMenuItems.map((item) => <li className='places__option' onClick={() => handelChooseSort(item)} tabIndex={0} key={item}>{item}</li>)}
+          {Object.values(SortMenuItems).map((item) =>
+            <li className='places__option' onClick={() => handelChooseSort(item)} tabIndex={0} key={item}>{item}</li>
+          )}
         </ul>
       )}
     </form>
