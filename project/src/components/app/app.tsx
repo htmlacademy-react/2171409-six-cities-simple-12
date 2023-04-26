@@ -25,7 +25,7 @@ function App(): JSX.Element {
       <Routes>
         <Route path={AppRoute.Main} element={<Layout />}>
           <Route index element={<MainScreen />} />
-          <Route path={AppRoute.Login} element={<Login />} />
+          {authorizationStatus !== AuthorizationStatus.Auth && <Route path={AppRoute.Login} element={<Login />} />}
           <Route path={AppRoute.Room}>
             <Route path=':id' element={<PropertyScreen />} />
           </Route>

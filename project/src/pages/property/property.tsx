@@ -125,7 +125,7 @@ function PropertyScreen(): JSX.Element {
             </section>
           </div>
         </div>
-        <MapComponent className='map' offers={similarOffers.concat(selectedOffer)} style={styleProp} activeOffer={selectedOffer.id && activeOffer} />
+        <MapComponent className='map' offers={similarOffers.concat(selectedOffer)} style={styleProp} activeOffer={activeOffer} />
       </section>
       <div className='container'>
         <section className='near-places places'>
