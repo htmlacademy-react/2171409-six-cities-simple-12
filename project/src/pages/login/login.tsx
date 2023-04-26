@@ -1,9 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/store';
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { loginAction } from '../../store/api-actions';
 import { AuthData } from '../../types/auth-data';
 import { AppRoute } from '../../const';
+
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{2,8}$/;
 
 function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
@@ -11,7 +14,7 @@ function LoginScreen(): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isValid, setIsValid] = useState(true);
+  const [isValid, setIsValid] = useState(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -19,29 +22,11 @@ function LoginScreen(): JSX.Element {
   function handleEmailChange(evt: React.ChangeEvent<HTMLInputElement>) {
     const emailValue = evt.target.value;
     setEmail(emailValue);
-    const emailRegex = /\S+@\S+\.\S+/;
-    if (emailRegex.test(emailValue) && password !== '') {
-      setError('');
-      setIsValid(false);
-    } else {
-      setIsValid(true);
-      setError('Некорректный email');
-    }
   }
 
   const handlePasswordChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const passwordValue = evt.target.value;
     setPassword(passwordValue);
-
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{2,}$/;
-
-    if (passwordRegex.test(passwordValue) && email !== '') {
-      setError('');
-      setIsValid(false);
-    } else {
-      setIsValid(true);
-      setError('Пароль должен содержать хотя бы одну букву и одну цифру.');
-    }
   };
 
   const onSubmit = (authData: AuthData) => {
@@ -59,6 +44,36 @@ function LoginScreen(): JSX.Element {
       navigate(AppRoute.Main);
     }
   };
+
+  useEffect(() => {
+    if (email === '') {
+      setIsValid(false);
+      setError('');
+    } else if (!emailRegex.test(email)) {
+      setIsValid(false);
+      setError('Некорректный email');
+    } else {
+      setError('');
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (password === '') {
+      setIsValid(false);
+      setError('');
+    } else if (!passwordRegex.test(password)) {
+      setIsValid(false);
+      setError('Пароль должен содержать хотя бы одну букву и одну цифру.');
+    } else {
+      setError('');
+    }
+  }, [password]);
+
+  useEffect(() => {
+    if (password !== '' && passwordRegex.test(password) && email !== '' && emailRegex.test(email)) {
+      setIsValid(true);
+    }
+  }, [email, password]);
 
   return (
     <div className="page page--gray page--login">
@@ -79,7 +94,7 @@ function LoginScreen(): JSX.Element {
                 <input className="login__input form__input" ref={passwordRef} type="password" name="password" placeholder="Password" required value={password} onChange={handlePasswordChange} />
                 <span style={{ color: 'red', display: error ? 'block' : 'none' }}>{error}</span>
               </div>
-              <button className="login__submit form__submit button" type="submit" disabled={isValid}>Sign in</button>
+              <button className="login__submit form__submit button" type="submit" disabled={!isValid}>Sign in</button>
             </form>
           </section>
           <section className="locations locations--login locations--current">

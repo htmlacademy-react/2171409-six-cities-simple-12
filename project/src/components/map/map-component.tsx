@@ -55,7 +55,7 @@ function MapComponent(props: MapComponentProps): JSX.Element {
         });
         marker
           .setIcon(
-            activeOffer && (offer.id === activeOffer || offer.id === activeMarker)
+            (activeOffer === activeMarker && !activeOffer) || activeMarker === offer.id || (activeOffer === offer.id && className !== 'map')
               ? currentCustomIcon
               : defaultCustomIcon,
           )
@@ -74,7 +74,7 @@ function MapComponent(props: MapComponentProps): JSX.Element {
     return () => {
       markers.forEach((marker) => marker.remove());
     };
-  }, [map, offers, activeOffer, selectedCity, activeMarker]);
+  }, [map, offers, activeOffer, selectedCity, activeMarker, className]);
 
   return (
     <section className={className} ref={mapRef} style={style} />
