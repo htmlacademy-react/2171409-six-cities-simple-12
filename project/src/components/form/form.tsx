@@ -32,8 +32,13 @@ function CommentFormComponent(props: CommentFormComponentProps): JSX.Element {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    dispatch(addReviewAction(formData));
-    event.currentTarget.reset();
+    try {
+      dispatch(addReviewAction(formData));
+      event.currentTarget.reset();
+      setIsSubmitActive(true);
+    } catch (error) {
+      setIsSubmitActive(false);
+    }
   }
 
   return (

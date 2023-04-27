@@ -127,7 +127,7 @@ export const clearErrorAction = createAsyncThunk<void, undefined, {
   'offers/clearError',
   (_arg, {dispatch}) => {
     setTimeout(
-      () => dispatch(setError(null)),
+      () => dispatch(setError(null)) && dispatch(setRoomsLoadingStatus(false)),
       TIMEOUT_SHOW_ERROR,
     );
   },

@@ -17,7 +17,7 @@ function MainScreenEmpty(props: MainScreenEmptyProps): JSX.Element {
               <b className="cities__status">No places to stay available</b>
               <p className="cities__status-description">We could not find any property available at the moment in {cityName}</p>
             </>}
-          {isOfferLoading && <b className="cities__status">...Loading offers. Please wait.</b>}
+          {isOfferLoading && <b className="cities__status">No connection to the server</b>}
         </div>
       </section>
       <div
