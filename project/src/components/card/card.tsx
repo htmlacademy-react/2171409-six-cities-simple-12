@@ -13,7 +13,7 @@ function CardComponent({ offer, setActiveOffer }: CardComponentProps): JSX.Eleme
   const offerId = `${id}`;
 
   return (
-    <article className='cities__card place-card' onMouseEnter={(e) => setActiveOffer ? setActiveOffer(id) : e.stopPropagation()}>
+    <article className='cities__card place-card' onMouseEnter={(e) => setActiveOffer ? setActiveOffer(id) : e.stopPropagation()} onMouseOver={() => setActiveOffer(id)} onMouseLeave={() => setActiveOffer(null)}>
       <div className='place-card__mark'>
         <span>{offer.isPremium ? 'Premium' : 'Standart'}</span>
       </div>

@@ -3,7 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import { useEffect, useRef } from 'react';
 import { URL_POINT_ACTIVE, URL_POINT_DEFAULT } from '../../const';
 import { Icon, Marker } from 'leaflet';
-import useMap from '../../hooks/useMap';
+import useMap from '../../hooks/use-map';
 import { useAppSelector } from '../../hooks/store';
 import { useParams } from 'react-router-dom';
 
