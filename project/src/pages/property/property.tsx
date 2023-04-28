@@ -11,7 +11,7 @@ import { fetchOfferAction, fetchOffersNearbyAction } from '../../store/api-actio
 import { loadOffer } from '../../store/action';
 import { Offer } from '../../types/offer';
 import OffersListNearComponent from '../../components/offers-near/offers-near';
-import MainScreen from '../main/main';
+import ErrorScreen from '../404/404';
 
 function PropertyScreen(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<null | number>(null);
@@ -43,7 +43,7 @@ function PropertyScreen(): JSX.Element {
 
   if (!selectedOffer && !isOfferLoading) {
     return (<Navigate to={AppRoute.Empty} replace />);
-  } else if (!selectedOffer) { return <MainScreen />; }
+  } else if (!selectedOffer) { return <ErrorScreen />; }
 
   const styleProp = { height: '579px', width: '1144px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '50px' };
 

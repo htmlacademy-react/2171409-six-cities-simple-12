@@ -1,4 +1,4 @@
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, FormEvent, useEffect, useCallback } from 'react';
 import { NewReview, OfferId } from '../../types/offer';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { addReviewAction, fetchReviewAction } from '../../store/api-actions';
@@ -10,16 +10,12 @@ type CommentFormComponentProps = {
 function CommentFormComponent(props: CommentFormComponentProps): JSX.Element {
   const { offerId } = props;
   const [formData, setFormData] = useState<NewReview>({ offerId: offerId, comment: '', rating: 0 });
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useAppDispatch();
   const reviewLoadingStatus = useAppSelector((state) => state.isReviewLoading);
-  const [isSubmitActive, setIsSubmitActive] = useState<boolean>(false);
-  useEffect(() => {
-    setIsSubmitActive(Number(formData.rating) === 0 || (formData.comment.length < 50 || formData.comment.length > 300));
-  }, [formData]);
 
-  useEffect(() => () => {
-    dispatch(fetchReviewAction(offerId));
-  }, [dispatch, formData, offerId]);
+  const isFormValid = useCallback(() => Number(formData.rating) > 0 && formData.comment.length >= 50 && formData.comment.length <= 300, [formData.comment.length, formData.rating]);
 
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -30,16 +26,26 @@ function CommentFormComponent(props: CommentFormComponentProps): JSX.Element {
     });
   };
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!isFormValid()) {
+      return;
+    }
     try {
+      setLoading(true);
       dispatch(addReviewAction(formData));
       event.currentTarget.reset();
-      setIsSubmitActive(true);
+      setFormData({ offerId: offerId, comment: '', rating: 0 });
     } catch (error) {
-      setIsSubmitActive(false);
+      setErrorMessage('Error');
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+
+  useEffect(() => () => {
+    dispatch(fetchReviewAction(offerId));
+  }, [dispatch, offerId]);
 
   return (
     <form className='reviews__form form' action='#' method='post' onSubmit={handleSubmit}>
@@ -81,7 +87,8 @@ function CommentFormComponent(props: CommentFormComponentProps): JSX.Element {
         <p className='reviews__help'>
           To submit review please make sure to set <span className='reviews__star'>rating</span> and describe your stay with at least <b className='reviews__text-amount'>50 characters</b>.
         </p>
-        <button className='reviews__submit form__submit button' type='submit' disabled={isSubmitActive || reviewLoadingStatus}>Submit</button>
+        <button className='reviews__submit form__submit button' type='submit' disabled={!isFormValid() || loading || reviewLoadingStatus}>{loading ? 'Sending...' : 'Submit'}</button>
+        {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
       </div>
     </form>
   );

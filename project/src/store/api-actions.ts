@@ -14,11 +14,15 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
   extra: AxiosInstance;
 }>(
   'data/fetchOffers',
-  async (_arg, {dispatch, extra: api}) => {
-    dispatch(setRoomsLoadingStatus(true));
-    const { data } = await api.get<Offers>(APIRoute.Hotels);
-    dispatch(setRoomsLoadingStatus(false));
-    dispatch(loadOffers(data));
+  async (_arg, { dispatch, extra: api }) => {
+    try {
+      dispatch(setRoomsLoadingStatus(true));
+      const { data } = await api.get<Offers>(APIRoute.Hotels);
+      dispatch(setRoomsLoadingStatus(false));
+      dispatch(loadOffers(data));
+    } catch (error) {
+      dispatch(setRoomsLoadingStatus(false));
+    }
   }
 );
 
@@ -32,10 +36,14 @@ export const fetchOfferAction = createAsyncThunk<void, OfferId, {
     if (!offerId) {
       dispatch(redirectToRoute(AppRoute.Main));
     }
-    dispatch(setOfferLoading(true));
-    const { data } = await api.get<Offer>(`${APIRoute.Hotels}/${offerId}`);
-    dispatch(loadOffer(data));
-    dispatch(setOfferLoading(false));
+    try {
+      dispatch(setOfferLoading(true));
+      const { data } = await api.get<Offer>(`${APIRoute.Hotels}/${offerId}`);
+      dispatch(loadOffer(data));
+      dispatch(setOfferLoading(false));
+    } catch (error) {
+      dispatch(setOfferLoading(false));
+    }
   }
 );
 
